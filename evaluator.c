@@ -58,20 +58,18 @@ int main() {
     printf("Enter the Expression\n");
     scanf("%s", expr);
     postfixConvert();
-    char temp;
-    int operand1, operand2, tempDigit;
+    int operand1, operand2, temp;
     ctr = 0;
     int result[2];
     int rTop = -1;
     while (stack[ctr] != '\0') {
-        temp = stack[ctr];
-        tempDigit = (int) (temp - '0');
-        if (tempDigit >= 0 && tempDigit <= 1000)
+        temp = (int) (stack[ctr] - '0');
+        if (tempDigit >= 0)
             result[++rTop] = tempDigit;
         else {
             operand1 = result[rTop--];
             operand2 = result[rTop--];
-            result[++rTop] = applyOperator(operand2, operand1, temp);
+            result[++rTop] = applyOperator(operand2, operand1, stack[ctr]);
         }
         ctr++;
     }
