@@ -34,7 +34,7 @@ void postfixConvert() {
         if (expr[ctr] >= '0' && expr[ctr] <= '9') {
             int val = 0, step = 1;
             while (expr[ctr] != '\0' && isdigit(expr[ctr])) {
-                val = val + ((int) (expr[ctr] - '0') * step);
+                val = val * step + (int) (expr[ctr] - '0');
                 step *= 10;
                 ctr++;
             }
@@ -64,8 +64,8 @@ int main() {
     int rTop = -1;
     while (stack[ctr] != '\0') {
         temp = (int) (stack[ctr] - '0');
-        if (tempDigit >= 0)
-            result[++rTop] = tempDigit;
+        if (temp >= 0)
+            result[++rTop] = temp;
         else {
             operand1 = result[rTop--];
             operand2 = result[rTop--];
