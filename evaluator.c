@@ -1,10 +1,8 @@
-// this evaluator will work with arithmetic operations(+,-,*,/) on a single digit operand length under 20 chars max
-// paranteses '()' aren't included as well.
 #include<stdio.h>
 
-char expr[20];
-char stack[20];
-int precedence(char a, char b) {
+char expr[20];//array to store entered expression
+char stack[20];//store the postfix expression
+int precedence(char a, char b) {//returns true if precedence of operator a is more or equal to than that of b
     return ((a == '+') || (a == '-')) && ((b == '*') || (b == '/')) ? 0 : 1;
 }
 
@@ -34,8 +32,14 @@ void postfixConvert() {
     ctr = 0;
     while (expr[ctr] != '\0') {
         if (expr[ctr] >= '0' && expr[ctr] <= '9') {
-            // add while loop here for merging multidigit operands
-            stack[++topOfValueStack] = expr[ctr];
+            int val = 0, step = 1;
+            while (expr[ctr] != '\0' && isdigit(expr[ctr])) {
+                val = val + ((int) (expr[ctr] - '0') * step);
+                step *= 10;
+                ctr++;
+            }
+            stack[++topOfValueStack] = val + '0';
+            ctr--;
         } else {
             while (topOperatorStack >= 0 && precedence(operatorStack[topOperatorStack], expr[ctr])) {
                 topsymb = operatorStack[topOperatorStack--];
@@ -55,14 +59,15 @@ int main() {
     scanf("%s", expr);
     postfixConvert();
     char temp;
-    int operand1, operand2;
+    int operand1, operand2, tempDigit;
     ctr = 0;
     int result[2];
     int rTop = -1;
     while (stack[ctr] != '\0') {
         temp = stack[ctr];
-        if (temp >= '0' && temp <= '9')
-            result[++rTop] = (int) (temp - '0');
+        tempDigit = (int) (temp - '0');
+        if (tempDigit >= 0 && tempDigit <= 1000)
+            result[++rTop] = tempDigit;
         else {
             operand1 = result[rTop--];
             operand2 = result[rTop--];
